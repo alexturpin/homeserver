@@ -2,7 +2,7 @@
 
 My home server docker config + some scripts.
 
-- HTPC setup inspired by sebgl/htpc-download-box
+- HTPC setup inspired by [sebgl/htpc-download-box](https://github.com/sebgl/htpc-download-box)
   - Sonarr
   - Radarr
   - Jackett

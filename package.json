@@ -16,9 +16,6 @@
     "url": "https://github.com/alexturpin/homeserver/issues"
   },
   "homepage": "https://github.com/alexturpin/homeserver#readme",
-  "dependencies": {
-    "zx": "^4.2.0"
-  },
   "devDependencies": {
     "prettier": "^2.4.1"
   }

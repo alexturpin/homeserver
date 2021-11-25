@@ -20,6 +20,8 @@ You'll need Node.js and the [`zx`](https://github.com/google/zx) package install
 npm i -g zx
 ```
 
+Create a `config.mjs` module that exports the right values for `CLOUDFLARE_API_TOKEN`, `ZONE_ID`, `RECORD_ID` 
+
 Add a crontab entry to run `ddns.mjs` through zx, for example every 10 minutes:
 
 ```

@@ -20,10 +20,10 @@ You'll need Node.js and the [`zx`](https://github.com/google/zx) package install
 npm i -g zx
 ```
 
-Create a `config.mjs` module that exports the right values for `CLOUDFLARE_API_TOKEN`, `ZONE_ID`, `RECORD_ID` 
+Create a `config.mjs` module that exports the right values for `CLOUDFLARE_API_TOKEN`, `ZONE_ID`, `RECORD_ID`
 
-Add a crontab entry to run `ddns.mjs` through zx, for example every 10 minutes:
+Add a crontab entry to run `ddns.mjs` through zx, for example every 10 minutes, changing the current working directory (for the last_ip file) and setting up a separate log file.
 
 ```
-*/10 * * * * ~/src/homeserver/ddns.mjs
+*/10 * * * * cd ~/src/homeserver/ && ~/src/homeserver/ddns.mjs >> ~/src/homeserver/ddns.log
 ```

@@ -1,5 +1,5 @@
 #!/usr/bin/env zx
-
+import "log-timestamp"
 import { CLOUDFLARE_API_TOKEN, ZONE_ID, RECORD_ID } from "./config.mjs"
 
 const dns_records_endpoint = `https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/dns_records/${RECORD_ID}`

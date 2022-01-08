@@ -1,0 +1,157 @@
+version: "3.4"
+services:
+  #deluge:
+  #  container_name: deluge
+  #  image: linuxserver/deluge:latest
+  #  restart: unless-stopped
+  #  network_mode: host
+  #  environment:
+  #    - PUID=${PUID} # default user id, defined in .env
+  #    - PGID=${PGID} # default group id, defined in .env
+  #    - TZ=${TZ} # timezone, defined in .env
+  #  volumes:
+  #    - ${ROOT}/downloads:/downloads # downloads folder
+  #    - ${ROOT}/config/deluge:/config # config files
+
+  #jackett:
+  #  container_name: jackett
+  #  image: linuxserver/jackett:latest
+  #  restart: unless-stopped
+  #  network_mode: host
+  #  environment:
+  #    - PUID=${PUID} # default user id, defined in .env
+  #    - PGID=${PGID} # default group id, defined in .env
+  #    - TZ=${TZ} # timezone, defined in .env
+  #  volumes:
+  #    - /etc/localtime:/etc/localtime:ro
+  #    - ${ROOT}/downloads/torrent-blackhole:/downloads # place where to put .torrent files for manual download
+  #    - ${ROOT}/config/jackett:/config # config files
+
+  #sonarr:
+  #  container_name: sonarr
+  #  image: linuxserver/sonarr:latest
+  #  restart: unless-stopped
+  #  network_mode: host
+  #  environment:
+  #    - PUID=${PUID} # default user id, defined in .env
+  #    - PGID=${PGID} # default group id, defined in .env
+  #    - TZ=${TZ} # timezone, defined in .env
+  #  volumes:
+  #    - /etc/localtime:/etc/localtime:ro
+  #    - ${ROOT}/config/sonarr:/config # config files
+  #    - ${ROOT}/complete/tv:/tv # tv shows folder
+  #    - ${ROOT}/downloads:/downloads # download folder
+
+  #radarr:
+  #  container_name: radarr
+  #  image: linuxserver/radarr:latest
+  #  restart: unless-stopped
+  #  network_mode: host
+  #  environment:
+  #    - PUID=${PUID} # default user id, defined in .env
+  #    - PGID=${PGID} # default group id, defined in .env
+  #    - TZ=${TZ} # timezone, defined in .env
+  #  volumes:
+  #    - /etc/localtime:/etc/localtime:ro
+  #    - ${ROOT}/config/radarr:/config # config files
+  #    - ${ROOT}/complete/movies:/movies # movies folder
+  #    - ${ROOT}/downloads:/downloads # download folder
+
+  #plex-server:
+  #  container_name: plex-server
+  #  image: plexinc/pms-docker:latest
+  #  restart: unless-stopped
+  #  environment:
+  #    - TZ=${TZ} # timezone, defined in .env
+  #  network_mode: host
+  #  volumes:
+  #    - ${ROOT}/config/plex/db:/config # plex database
+  #    - ${ROOT}/config/plex/transcode:/transcode # temp transcoded files
+  #    - ${ROOT}/complete:/data # media library
+
+  #bazarr:
+  #  container_name: bazarr
+  #  image: linuxserver/bazarr
+  #  restart: unless-stopped
+  #  network_mode: host
+  #  environment:
+  #    - PUID=${PUID} # default user id, defined in .env
+  #    - PGID=${PGID} # default group id, defined in .env
+  #    - TZ=${TZ} # timezone, defined in .env
+  #    - UMASK_SET=022 #optional
+  #  volumes:
+  #    - ${ROOT}/config/bazarr:/config # config files
+  #    - ${ROOT}/complete/movies:/movies # movies folder
+  #    - ${ROOT}/complete/tv:/tv # tv shows folder
+
+  homeassistant:
+    container_name: homeassistant
+    image: linuxserver/homeassistant
+    network_mode: host
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${ROOT}/config/homeassistant:/config
+    restart: unless-stopped
+
+  zwavejs2mqtt:
+    container_name: zwavejs2mqtt
+    image: zwavejs/zwavejs2mqtt:latest
+    restart: unless-stopped
+    network_mode: host
+    tty: true
+    stop_signal: SIGINT
+    environment:
+      - TZ=${TZ}
+    devices:
+      - '/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave'
+    volumes:
+      - ${ROOT}/config/zwavejs2mqtt:/usr/src/app/store
+
+  mosquitto:
+    container_name: mosquitto
+    image: amd64/eclipse-mosquitto
+    restart: unless-stopped
+    ports:
+      - 1883:1883 # broker
+      - 9001:9001 # ws
+    volumes:
+      - ${ROOT}/config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ${ROOT}/mosquitto/data 
+      - ${ROOT}/mosquitto/log
+
+  # when restarted, will need new MFA token
+  # docker exec -it wyze-bridge sh -c 'echo "123456" > /tokens/mfa_token'
+  wyze-bridge:
+    container_name: wyze-bridge
+    image: mrlt8/wyze-bridge:latest
+    restart: unless-stopped
+    ports: # RTMP 1935 is restreamed by frigate
+        - 8554:8554 # RTSP
+        - 8888:8888 # HLS
+    environment:
+        - WYZE_EMAIL=${WYZE_EMAIL}
+        - WYZE_PASSWORD=${WYZE_PASSWORD}
+
+  frigate:
+    container_name: frigate
+    image: blakeblackshear/frigate:stable-amd64
+    restart: unless-stopped
+    shm_size: "128mb"
+    volumes:
+      - ${ROOT}/config/frigate/config.yml:/config/config.yml:ro
+      - ${ROOT}/frigate:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000
+    ports:
+      - "5000:5000" # HTTP
+      - "1935:1935" # RTMP
+    environment:
+      FRIGATE_RTSP_PASSWORD: ${FRIGATE_RTSP_PASSWORD}
+      LIBVA_DRIVER_NAME: radeonsi
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128

@@ -2,3 +2,5 @@ node_modules/
 last_ip
 config.mjs
 *.log
+.env
+

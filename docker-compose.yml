@@ -100,7 +100,6 @@ services:
     container_name: zwavejs2mqtt
     image: zwavejs/zwavejs2mqtt:latest
     restart: unless-stopped
-    network_mode: host
     tty: true
     stop_signal: SIGINT
     environment:
@@ -109,6 +108,9 @@ services:
       - '/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave'
     volumes:
       - ${ROOT}/config/zwavejs2mqtt:/usr/src/app/store
+    ports:
+      - "8091:8091" # HTTP
+      - "3000:3000" # ws
 
   mosquitto:
     container_name: mosquitto
@@ -131,13 +133,17 @@ services:
     ports: # RTMP 1935 is restreamed by frigate
         - 8554:8554 # RTSP
         - 8888:8888 # HLS
+        - 5001:5000 # HTTP
     environment:
         - WYZE_EMAIL=${WYZE_EMAIL}
         - WYZE_PASSWORD=${WYZE_PASSWORD}
+        - TOTP_KEY=${TOTP_KEY}
+        - ENABLE_AUDIO=True
+        - AUDIO_CODEC=AAC
 
   frigate:
     container_name: frigate
-    image: blakeblackshear/frigate:stable-amd64
+    image: blakeblackshear/frigate:stable
     restart: unless-stopped
     shm_size: "128mb"
     volumes:

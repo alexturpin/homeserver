@@ -6,7 +6,18 @@ My home server docker config + some scripts.
 - Home Assistant with Mosquitto as an MQTT broker for home automation
 - A custom dynamic DNS setup using the CloudFlare DNS records API
 
+## Updating
+
+- Update all images: `docker-compose pull`
+  - update a single image: `docker-compose pull homeassistant`
+- Let compose update all containers as necessary: `docker-compose up -d`
+  - update a single container: `docker-compose up -d homeassistant`
+
 ## Ports
+
+```
+hostname -I
+```
 
 <table>
   <tr><th>Service</th><th>Port</th></tr>
@@ -15,6 +26,7 @@ My home server docker config + some scripts.
   <tr><td>zwavejs2mqtt websocket server</td><td>3000</td></tr>
   <tr><td>mosquitto MQTT broker</td><td>1883</td></tr>
   <tr><td>mosquitto MQTT broker websocket server</td><td>9001</td></tr>
+  <tr><td>wyze-bridge web UI</td><td>5001</td></tr>
 </table>
 
 ## DDNS setup

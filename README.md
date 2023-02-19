@@ -13,6 +13,10 @@ My home server docker config + some scripts.
 - Let compose update all containers as necessary: `docker-compose up -d`
   - update a single container: `docker-compose up -d homeassistant`
 
+## Todo
+
+- Ombi (https://ombi.io/)
+
 ## Ports
 
 ```

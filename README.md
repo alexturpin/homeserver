@@ -6,8 +6,10 @@ My home server docker config + some scripts.
 - Home Assistant with Mosquitto as an MQTT broker for home automation
 - A custom dynamic DNS setup using the CloudFlare DNS records API
 
-## Updating
+## Docker
 
+- Restart: `docker-compose restart [container]`
+- Logs: `docker-compose logs -f [container]` or `docker-compose logs --tail 100 [container]`
 - Update all images: `docker-compose pull`
   - update a single image: `docker-compose pull homeassistant`
 - Let compose update all containers as necessary: `docker-compose up -d`

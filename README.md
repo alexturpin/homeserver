@@ -31,6 +31,8 @@ hostname -I
   <tr><td>mosquitto MQTT broker</td><td>1883</td></tr>
   <tr><td>mosquitto MQTT broker websocket server</td><td>9001</td></tr>
   <tr><td>wyze-bridge web UI</td><td>5001</td></tr>
+  <tr><td>frigate web UI</td><td>5000</td></tr>
+  <tr><td>frigate RTMP</td><td>1935</td></tr>
 </table>
 
 ## DDNS setup

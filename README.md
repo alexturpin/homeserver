@@ -15,6 +15,11 @@ My home server docker config + some scripts.
 - Let compose update all containers as necessary: `docker-compose up -d`
   - update a single container: `docker-compose up -d homeassistant`
 
+## Size
+
+- Disk info: `df -H /media/alex/Media`
+- Directory disk usage: `du -sh /media/alex/Media/frigate`
+
 ## Todo
 
 - Ombi (https://ombi.io/)

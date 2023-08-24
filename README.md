@@ -21,9 +21,7 @@ My home server docker config + some scripts.
 
 ## Ports
 
-```
-hostname -I
-```
+
 
 <table>
   <tr><th>Service</th><th>Port</th></tr>
@@ -52,3 +50,11 @@ Add a crontab entry to run `ddns.mjs` through zx, for example every 10 minutes, 
 ```
 */10 * * * * cd ~/src/homeserver/ && ~/src/homeserver/ddns.mjs >> ~/src/homeserver/ddns.log
 ```
+
+# Local IP
+
+```
+hostname -I
+```
+
+Needs to be updated in frigate config.

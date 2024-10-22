@@ -26,8 +26,6 @@ My home server docker config + some scripts.
 
 ## Ports
 
-
-
 <table>
   <tr><th>Service</th><th>Port</th></tr>
   <tr><td>homeassistant</td><td>8443</td></tr>
